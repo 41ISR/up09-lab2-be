@@ -16,11 +16,15 @@ const io = socketIo(server, {
 const users = {};
 const messages = []; // Store messages globally
 
-app.use(cors({
-    origin: "*", // Allow requests from this origin
-    methods: ["GET", "POST"],
-    credentials: true
-}));
+app.options('*');
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allowed HTTP methods
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allowed headers
+  res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials if needed
+  next();
+});
+
 app.use(express.json());
 
 // Register or authorize user
